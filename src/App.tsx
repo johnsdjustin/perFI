@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { StringMappingType } from 'typescript';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import './App.css';
 
 // Goal:
@@ -22,6 +21,9 @@ function App() {
   const [date, setDate] = useState('');
   const [trackedExpenses, setTrackedExpenses] = useState([] as TrackedExpense[]);
 
+  /**
+   * Clears the form field state properties. This is typically called on form submit
+   */
   const clearFormFields = () => {
     setExpense('');
     setCost('');
@@ -29,16 +31,40 @@ function App() {
     setDate('');
   }
 
-  const handleSubmit = (e: React.FormEvent): void => {
-    console.log('Submitted');
+  /**
+   * Formats date input before it gets added to the table
+   * 
+   * 8/13/2022 - TODO: Write unit test for this after integrating JEST
+   * @param dateInput 
+   * @returns 
+   */
+  const formatDateForTable = (date: Date): string => {
     
+    const month = date.toLocaleString('default', {month: 'long'});
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const formatted = `${month} ${day}, ${year}`;
+
+    return formatted;
+  }
+
+  const handleDateChange = (e: ChangeEvent): void => {
+    const dateInput = (e.target as HTMLInputElement).value;
+
+    setDate(dateInput);
+  }
+
+  const handleSubmit = (e: React.FormEvent): void => {    
     e.preventDefault();
+
+    const dateOb = new Date(date);
+    const formattedDate = formatDateForTable(dateOb);
 
     const newTrackedExpense = {
       expense,
-      cost: parseFloat(cost), // TODO: Fix. This is rounding down instead of casting as float
+      cost: parseFloat(cost),
       category,
-      date,
+      date: formattedDate,
     }
 
     setTrackedExpenses(oldTrackExpenses => [...oldTrackExpenses, newTrackedExpense]);
@@ -81,8 +107,7 @@ function App() {
           </label>
           <label className='FormInput'>
             Date
-            {/* <input type="text" value = {date} onChange = {(e) => setDate(e.target.value)}/> */}
-            <input type = "date" value = {date} onChange = {(e) => setDate(e.target.value)}/>
+            <input type = "date" value = {date} onChange = {(e) => handleDateChange(e)}/>
           </label>
         </div>
         <div className = "ButtonContainer">
