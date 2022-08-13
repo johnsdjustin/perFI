@@ -1,5 +1,6 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import './App.css';
+import ExpenseBucket from './components/ExpenseBucket';
 
 // Goal:
 // Make a table of expenses
@@ -15,11 +16,18 @@ function App() {
     date: string; // TODO: Convert to date string
   }
 
+  interface ExpenseBucketData {
+    name: string;
+    goal: number;
+    balance: number;
+  }
+
   const [expense, setExpense] = useState('');
   const [cost, setCost] = useState('');
   const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
   const [trackedExpenses, setTrackedExpenses] = useState([] as TrackedExpense[]);
+  const [expenseBuckets, setExpenseBuckets] = useState([] as ExpenseBucketData[]);
 
   /**
    * Clears the form field state properties. This is typically called on form submit
@@ -73,6 +81,13 @@ function App() {
 
   return (
     <div className="App">
+      <div className='ExpenseBucketContainer'>
+        <ExpenseBucket
+          heading='Gas'
+          balance={45}
+          goal={100}
+        />
+      </div>
       <table className='TableContainer'>
         <tr className = "TableHeader">
           <th>Expense</th>
@@ -91,29 +106,31 @@ function App() {
           ))
         }
       </table>
-      <form onSubmit={handleSubmit} className="FormContainer">
-        <div className='FormInputContainer'>
-          <label className='FormInput'>
-            Expense
-            <input type="text" value = {expense} onChange = {(e) => setExpense(e.target.value)}/>
-          </label>
-          <label className='FormInput'>
-            Cost
-            <input type="text" value = {cost} onChange = {(e) => setCost(e.target.value)}/>
-          </label>
-          <label className='FormInput'>
-            Category
-            <input type="text" value = {category} onChange = {(e) => setCategory(e.target.value)}/>
-          </label>
-          <label className='FormInput'>
-            Date
-            <input type = "date" value = {date} onChange = {(e) => handleDateChange(e)}/>
-          </label>
-        </div>
-        <div className = "ButtonContainer">
-          <button type="submit">Add</button>
-        </div>
-      </form>
+      <div className='FormContainer'>
+        <form onSubmit={handleSubmit} className="Form">
+          <div className='FormInputContainer'>
+            <label className='FormInput'>
+              Expense
+              <input type="text" value = {expense} onChange = {(e) => setExpense(e.target.value)}/>
+            </label>
+            <label className='FormInput'>
+              Cost
+              <input type="text" value = {cost} onChange = {(e) => setCost(e.target.value)}/>
+            </label>
+            <label className='FormInput'>
+              Category
+              <input type="text" value = {category} onChange = {(e) => setCategory(e.target.value)}/>
+            </label>
+            <label className='FormInput'>
+              Date
+              <input type = "date" value = {date} onChange = {(e) => handleDateChange(e)}/>
+            </label>
+          </div>
+          <div className = "ButtonContainer">
+            <button type="submit">Add</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,30 @@
+.ExpenseBucketContainer{
+width: 100%;
+margin: 10px 0px 10px 0px;
+display: flex;
+flex-direction: row;
+justify-content: flex-start;
+}
+
+.ExpenseBucket{
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+}
+
+.ExpenseContainer {
+display: flex;
+}
+
+.ExpenseItem {
+display: flex;
+flex-direction: column;
+}
+
+.ExpenseItemSubHeaderText{
+    margin: 2px 8px 0 0;
+}
+
+.ExpenseItemNumber{
+    margin: 2px 0 0 0;
+}
